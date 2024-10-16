@@ -14,31 +14,36 @@ export const getTasks = async () => {
 
 export const createTask = async (task: TaskType) => {
   try {
-    const hasTask = await Task.find({ title: task.title, date: task.date })
+    const hasTask = await Task.findOne({ title: task.title, date: task.date })
 
     if (!hasTask) {
-      await Task.create({
-        id: task.id,
+      const newTask = await Task.create({
         title: task.title,
         status: task.status,
-        date: task.date
-      })
+        date: new Date(task.date)
+      },)
+
+      return newTask
+    }
+    else {
+      return false
     }
   }
   catch (error) {
-    console.log(error)
     return false
   }
 }
 
-export const updateTask = async ({ id, status }: Partial<TaskType>) => {
+export const updateTask = async ({ _id, status }: Partial<TaskType>) => {
   try {
-    const hasTask = await Task.find({ id })
+    const hasTask = await Task.findOne({ _id })
 
     if (hasTask) {
-      await Task.updateOne({ id }, {
+      const newTask = await Task.updateOne({ _id }, {
         status
       })
+
+      return newTask
     }
   }
   catch (error) {
@@ -47,12 +52,13 @@ export const updateTask = async ({ id, status }: Partial<TaskType>) => {
   }
 }
 
-export const deleteTask = async ({ id }: TaskType) => {
+export const deleteTask = async ({ _id }: Partial<TaskType>) => {
   try {
-    const hasTask = await Task.find({ id })
+    const hasTask = await Task.findOne({ _id })
 
     if (hasTask) {
-      await Task.deleteOne({ id })
+      await Task.deleteOne({ _id })
+      return true
     }
   }
   catch (error) {

@@ -6,14 +6,13 @@ enum StatusEnum {
 }
 
 export type TaskType = {
-  id: string,
+  _id: string,
   title: string,
   date: Date,
   status: StatusEnum,
 }
 
 const schema = new Schema<TaskType>({
-  id: { type: String, required: true },
   title: { type: String, required: true },
   date: { type: Date, required: true },
   status: { type: String, default: StatusEnum.pendente, enum: StatusEnum }

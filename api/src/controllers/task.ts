@@ -18,9 +18,9 @@ export const getTasks: RequestHandler = async (req, res) => {
 
 export const createTask: RequestHandler = async (req, res) => {
   const data = req.body
-  const hashblock = await taskService.createTask(data)
+  const task = await taskService.createTask(data)
 
-  if (hashblock) {
+  if (task) {
     res.status(201).json({ ok: "Task created" })
   }
   else {
@@ -31,11 +31,17 @@ export const createTask: RequestHandler = async (req, res) => {
 }
 
 export const updateTask: RequestHandler = async (req, res) => {
-  const data: TaskType = req.body
-  const task = await taskService.updateTask({ id: data.id, status: data.status })
+  const { _id } = req.params
+  const { status }: TaskType = req.body
+
+  if (!status) {
+    return res.status(400).json({ error: "Status is required" })
+  }
+
+  const task = await taskService.updateTask({ _id, status: status })
 
   if (task) {
-    res.status(201).json({ ok: "Task updated" })
+    res.status(200).json({ ok: "Task updated" })
   }
   else {
     res.status(500).json({
@@ -45,8 +51,9 @@ export const updateTask: RequestHandler = async (req, res) => {
 }
 
 export const deleteTask: RequestHandler = async (req, res) => {
-  const data = req.body
-  const task = await taskService.deleteTask(data.id)
+  const { _id } = req.params
+
+  const task = await taskService.deleteTask({ _id })
 
   if (task) {
     res.status(200).json({ ok: "Task deleted" })
