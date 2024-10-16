@@ -5,11 +5,11 @@ dotenv.config()
 
 export const mongoConnect = async () => {
   try {
-    console.log('Conectando ao mongodb')
+    console.log('Connecting on mongodb')
     await connect(process.env.MONGO_URL!)
-    console.log('MongoDB conectado com sucesso!')
+    console.log('MongoDB connected with success!')
   }
   catch (error) {
-    console.log('Erro de conexão com MongoDB: ', error)
+    console.log('Error to connect on MongoDB: ', error)
   }
 }
