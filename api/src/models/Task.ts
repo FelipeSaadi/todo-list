@@ -10,12 +10,14 @@ export type TaskType = {
   title: string,
   date: Date,
   status: StatusEnum,
+  userId: string
 }
 
 const schema = new Schema<TaskType>({
   title: { type: String, required: true },
   date: { type: Date, required: true },
-  status: { type: String, default: StatusEnum.pendente, enum: StatusEnum }
+  status: { type: String, default: StatusEnum.pendente, enum: StatusEnum },
+  userId: { type: String, required: true }
 })
 
 const modelName: string = 'Task'

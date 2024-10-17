@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import JWT from 'jsonwebtoken'
 import * as userService from '../services/user'
 import { generateToken } from "../utils";
 
@@ -10,17 +9,17 @@ export const register: RequestHandler = async (req, res) => {
     const newUser = await userService.createUser(email, password)
 
     if (newUser instanceof Error) {
-      res.json({ error: newUser.message })
+      res.status(400).json({ error: newUser.message })
     }
     else {
       const token = generateToken(newUser._id, newUser.email)
 
-      res.json({ status: true, token })
+      res.status(201).json({ status: true, token })
       return
     }
   }
   else {
-    res.json({ error: 'E-mail or password not sended' })
+    res.status(400).json({ error: 'E-mail or password not sended' })
   }
 }
 
@@ -33,10 +32,11 @@ export const login: RequestHandler = async (req, res) => {
     if (user && userService.matchPassword(password, user.password)) {
       const token = generateToken(user._id, user.email)
 
-      res.json({ status: true, token })
+      res.status(200).json({ status: true, _id: user._id, token })
       return
     }
   }
-
-  res.json({ status: false })
+  else {
+    res.status(400).json({ status: false })
+  }
 }

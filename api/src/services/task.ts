@@ -4,7 +4,7 @@ import { TaskType } from "../models/Task"
 
 export const getTasks = async () => {
   try {
-    const tasks = await Task.find().sort({ date: -1 })
+    const tasks = await Task.find().sort({ date: 1 })
     return tasks
   }
   catch (error) {
@@ -14,14 +14,18 @@ export const getTasks = async () => {
 
 export const createTask = async (task: TaskType) => {
   try {
-    const hasTask = await Task.findOne({ title: task.title, date: task.date })
+    const dateFormated = `${new Date(task.date)}Z`
+    const hasTask = await Task.findOne({ title: task.title, userId: task.userId, date: dateFormated })
 
     if (!hasTask) {
       const newTask = await Task.create({
         title: task.title,
         status: task.status,
-        date: new Date(task.date)
+        date: dateFormated,
+        userId: task.userId
       },)
+
+      console.log(newTask)
 
       return newTask
     }
