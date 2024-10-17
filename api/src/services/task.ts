@@ -1,6 +1,6 @@
 
-import Task from "../model/Task"
-import { TaskType } from "../model/Task"
+import Task from "../models/Task"
+import { TaskType } from "../models/Task"
 
 export const getTasks = async () => {
   try {

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express"
 import * as taskService from '../services/task'
-import { TaskType } from "../model/Task"
+import { TaskType } from "../models/Task"
 
 
 export const getTasks: RequestHandler = async (req, res) => {
