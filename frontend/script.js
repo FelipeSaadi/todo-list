@@ -10,10 +10,6 @@ let options = {
 };
 
 $(document).ready(async () => {
-  // await user.login("felipesaadisiegert@gmail.com", "admin123");
-  // console.log(token);
-  // await tasks.list();
-
   $("#login").submit(function (e) {
     e.preventDefault();
 
