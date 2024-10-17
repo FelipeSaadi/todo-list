@@ -10,4 +10,4 @@
 npm run dev
 ```
 
-4) Abra o index.html em /frontend
+4) Abra o index.html em /frontend.
