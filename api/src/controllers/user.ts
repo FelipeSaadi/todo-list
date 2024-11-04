@@ -14,7 +14,7 @@ export const register: RequestHandler = async (req, res) => {
     else {
       const token = generateToken(newUser._id, newUser.email)
 
-      res.status(201).json({ status: true, token })
+      res.status(201).json({ status: true, _id: newUser._id, token })
       return
     }
   }

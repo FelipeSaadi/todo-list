@@ -4,7 +4,9 @@ import { TaskType } from "../models/Task"
 
 
 export const getTasks: RequestHandler = async (req, res) => {
-  const tasks = await taskService.getTasks()
+  const { _id } = req.params
+
+  const tasks = await taskService.getTasks(_id)
 
   if (tasks) {
     res.status(200).json({ ok: tasks })
@@ -19,11 +21,7 @@ export const getTasks: RequestHandler = async (req, res) => {
 export const createTask: RequestHandler = async (req, res) => {
   const data = req.body
 
-  console.log(data)
   const task = await taskService.createTask(data)
-
-  console.log(task)
-
 
   if (task) {
     res.status(201).json({ ok: "Task created" })
