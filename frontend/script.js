@@ -1,4 +1,4 @@
-const api = "http://localhost:8000";
+const api = "https://todo-list-xqlq.onrender.com";
 
 let options = {
   weekday: "long",
@@ -8,14 +8,20 @@ let options = {
 };
 
 $(document).ready(async () => {
+  $("#register").submit(function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let data = form.serializeArray();
+
+    user.register(data[0].value, data[1].value);
+  });
+
   $("#login").submit(function (e) {
     e.preventDefault();
 
     let form = $(this);
     let data = form.serializeArray();
-    console.log(data);
-    console.log(data[0].value);
-    console.log(data[1].value);
 
     user.login(data[0].value, data[1].value);
   });
