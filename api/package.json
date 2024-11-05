@@ -2,7 +2,8 @@
   "name": "node-api",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
