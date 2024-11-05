@@ -1,10 +1,23 @@
 
 import Task from "../models/Task"
 import { TaskType } from "../models/Task"
+import { redisClient } from "../database/redis"
 
-export const getTasks = async () => {
+export const getTasks = async (userId: string) => {
   try {
-    const tasks = await Task.find().sort({ date: 1 })
+    const cache = await redisClient.get(userId)
+    if (cache) {
+      return JSON.parse(cache)
+    }
+
+    const tasks = await Task.find({ userId }).sort({ date: 1 })
+
+    try {
+      await redisClient.set(userId, JSON.stringify(tasks), { "EX": 900 })
+    } catch (error) {
+      console.log(error)
+    }
+
     return tasks
   }
   catch (error) {
@@ -14,7 +27,7 @@ export const getTasks = async () => {
 
 export const createTask = async (task: TaskType) => {
   try {
-    const dateFormated = `${new Date(task.date)}Z`
+    const dateFormated = new Date(`${task.date} 12:00:00:000`)
     const hasTask = await Task.findOne({ title: task.title, userId: task.userId, date: dateFormated })
 
     if (!hasTask) {
@@ -25,7 +38,11 @@ export const createTask = async (task: TaskType) => {
         userId: task.userId
       },)
 
-      console.log(newTask)
+      try {
+        await redisClient.del(task.userId)
+      } catch (error) {
+        console.log(error)
+      }
 
       return newTask
     }
@@ -47,6 +64,12 @@ export const updateTask = async ({ _id, status }: Partial<TaskType>) => {
         status
       })
 
+      try {
+        await redisClient.del(hasTask.userId)
+      } catch (error) {
+        console.log(error)
+      }
+
       return newTask
     }
   }
@@ -62,6 +85,13 @@ export const deleteTask = async ({ _id }: Partial<TaskType>) => {
 
     if (hasTask) {
       await Task.deleteOne({ _id })
+
+      try {
+        await redisClient.del(hasTask.userId)
+      } catch (error) {
+        console.log(error)
+      }
+
       return true
     }
   }
