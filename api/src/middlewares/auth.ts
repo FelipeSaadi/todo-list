@@ -1,11 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-
-import User from "../models/User"
-import { UserType } from "../models/User"
 import JWT from 'jsonwebtoken'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 export const Auth = {
   private: async (req: Request, res: Response, next: NextFunction) => {
