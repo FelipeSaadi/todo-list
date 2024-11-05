@@ -27,7 +27,7 @@ export const getTasks = async (userId: string) => {
 
 export const createTask = async (task: TaskType) => {
   try {
-    const dateFormated = `${new Date(task.date)}Z`
+    const dateFormated = new Date(`${task.date} 12:00:00:000`)
     const hasTask = await Task.findOne({ title: task.title, userId: task.userId, date: dateFormated })
 
     if (!hasTask) {
