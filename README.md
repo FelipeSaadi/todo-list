@@ -1,6 +1,9 @@
 # To-Do List
 
-## Como Rodar:
+## Acesse em: 
+http://saadi-todo-list-bucket.s3-website-us-east-1.amazonaws.com/
+
+## Como Rodar Local:
 1) Navegue até a pasta /api.
 
 2) Crie o .env a partir do .env.example e troque as informações.
